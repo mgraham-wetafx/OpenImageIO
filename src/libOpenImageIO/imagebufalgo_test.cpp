@@ -1108,6 +1108,17 @@ test_opencv()
     auto comp = ImageBufAlgo::compare(src, dst, 0.0f, 0.0f);
     OIIO_CHECK_EQUAL(comp.error, false);
     OIIO_CHECK_EQUAL(comp.maxerror, 0.0f);
+
+    std::cout << "Testing to_OpenCV\n";
+    ImageBuf img1( "/digi/dev/user/mgraham/work/openimageio/testsuite/opencv/ref/8bit.tif" );
+    img1.read();
+
+    const ImageSpec& spec = img1.spec();
+    fmt::print("Size: [{}, {}]\n", spec.height, spec.width);
+
+    cv::Mat result(spec.height, spec.width, CV_8UC1);
+    ImageBufAlgo::to_OpenCV(result, img1);
+    fmt::print("Size: [{}, {}]\n", result.cols, result.rows);
 #endif
 }
 
